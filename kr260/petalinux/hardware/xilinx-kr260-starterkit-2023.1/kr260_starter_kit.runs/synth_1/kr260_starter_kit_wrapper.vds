@@ -1,0 +1,236 @@
+#-----------------------------------------------------------
+# Vivado v2023.1 (64-bit)
+# SW Build 3865809 on Sun May  7 15:04:56 MDT 2023
+# IP Build 3864474 on Sun May  7 20:36:21 MDT 2023
+# SharedData Build 3865790 on Sun May 07 13:33:03 MDT 2023
+# Start of session at: Sun May  7 23:16:05 2023
+# Process ID: 23778
+# Current directory: /tmp/tmp.DZjIAKcPac/temp/hw_design/k26_starter_kits/kr260/project/kr260_starter_kit.runs/synth_1
+# Command line: vivado -log kr260_starter_kit_wrapper.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source kr260_starter_kit_wrapper.tcl
+# Log file: /tmp/tmp.DZjIAKcPac/temp/hw_design/k26_starter_kits/kr260/project/kr260_starter_kit.runs/synth_1/kr260_starter_kit_wrapper.vds
+# Journal file: /tmp/tmp.DZjIAKcPac/temp/hw_design/k26_starter_kits/kr260/project/kr260_starter_kit.runs/synth_1/vivado.jou
+# Running On: xcossw03, OS: Linux, CPU Frequency: 2511.276 MHz, CPU Physical cores: 28, Host memory: 270383 MB
+#-----------------------------------------------------------
+Sourcing tcl script '/home/xbrbbot/.Xilinx/Vivado/Vivado_init.tcl'
+501 Beta devices matching pattern found, 501 enabled.
+enable_beta_device: Time (s): cpu = 00:00:11 ; elapsed = 00:00:12 . Memory (MB): peak = 2474.551 ; gain = 153.512 ; free physical = 145513 ; free virtual = 237805
+source kr260_starter_kit_wrapper.tcl -notrace
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1704] No user IP repositories specified
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository '/proj/xbuilds/SWIP/2023.1_0507_1903/installs/lin64/Vivado/2023.1/data/ip'.
+Command: synth_design -top kr260_starter_kit_wrapper -part xck26-sfvc784-2LV-c
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xck26'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xck26'
+INFO: [Device 21-403] Loading part xck26-sfvc784-2LV-c
+INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 4 processes.
+INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
+INFO: [Synth 8-7075] Helper process launched with PID 24007
+---------------------------------------------------------------------------------
+Starting RTL Elaboration : Time (s): cpu = 00:00:04 ; elapsed = 00:00:04 . Memory (MB): peak = 3732.211 ; gain = 244.832 ; free physical = 141263 ; free virtual = 233556
+---------------------------------------------------------------------------------
+INFO: [Synth 8-6157] synthesizing module 'kr260_starter_kit_wrapper' [/tmp/tmp.DZjIAKcPac/temp/hw_design/k26_starter_kits/kr260/project/kr260_starter_kit.srcs/sources_1/imports/hdl/kr260_starter_kit_wrapper.v:13]
+INFO: [Synth 8-6157] synthesizing module 'kr260_starter_kit' [/tmp/tmp.DZjIAKcPac/temp/hw_design/k26_starter_kits/kr260/project/kr260_starter_kit.gen/sources_1/bd/kr260_starter_kit/synth/kr260_starter_kit.v:13]
+INFO: [Synth 8-6157] synthesizing module 'kr260_starter_kit_xlslice_0_0' [/tmp/tmp.DZjIAKcPac/temp/hw_design/k26_starter_kits/kr260/project/kr260_starter_kit.gen/sources_1/bd/kr260_starter_kit/ip/kr260_starter_kit_xlslice_0_0/synth/kr260_starter_kit_xlslice_0_0.v:53]
+INFO: [Synth 8-6157] synthesizing module 'xlslice_v1_0_2_xlslice' [/tmp/tmp.DZjIAKcPac/temp/hw_design/k26_starter_kits/kr260/project/kr260_starter_kit.gen/sources_1/bd/kr260_starter_kit/ipshared/11d0/hdl/xlslice_v1_0_vl_rfs.v:13]
+INFO: [Synth 8-6155] done synthesizing module 'xlslice_v1_0_2_xlslice' (0#1) [/tmp/tmp.DZjIAKcPac/temp/hw_design/k26_starter_kits/kr260/project/kr260_starter_kit.gen/sources_1/bd/kr260_starter_kit/ipshared/11d0/hdl/xlslice_v1_0_vl_rfs.v:13]
+INFO: [Synth 8-6155] done synthesizing module 'kr260_starter_kit_xlslice_0_0' (0#1) [/tmp/tmp.DZjIAKcPac/temp/hw_design/k26_starter_kits/kr260/project/kr260_starter_kit.gen/sources_1/bd/kr260_starter_kit/ip/kr260_starter_kit_xlslice_0_0/synth/kr260_starter_kit_xlslice_0_0.v:53]
+INFO: [Synth 8-6157] synthesizing module 'kr260_starter_kit_zynq_ultra_ps_e_0_0' [/tmp/tmp.DZjIAKcPac/temp/hw_design/k26_starter_kits/kr260/project/kr260_starter_kit.runs/synth_1/.Xil/Vivado-23778-xcossw03/realtime/kr260_starter_kit_zynq_ultra_ps_e_0_0_stub.v:6]
+INFO: [Synth 8-6155] done synthesizing module 'kr260_starter_kit_zynq_ultra_ps_e_0_0' (0#1) [/tmp/tmp.DZjIAKcPac/temp/hw_design/k26_starter_kits/kr260/project/kr260_starter_kit.runs/synth_1/.Xil/Vivado-23778-xcossw03/realtime/kr260_starter_kit_zynq_ultra_ps_e_0_0_stub.v:6]
+WARNING: [Synth 8-7071] port 'emio_enet0_enet_tsu_timer_cnt' of module 'kr260_starter_kit_zynq_ultra_ps_e_0_0' is unconnected for instance 'zynq_ultra_ps_e_0' [/tmp/tmp.DZjIAKcPac/temp/hw_design/k26_starter_kits/kr260/project/kr260_starter_kit.gen/sources_1/bd/kr260_starter_kit/synth/kr260_starter_kit.v:25]
+WARNING: [Synth 8-7071] port 'pl_resetn0' of module 'kr260_starter_kit_zynq_ultra_ps_e_0_0' is unconnected for instance 'zynq_ultra_ps_e_0' [/tmp/tmp.DZjIAKcPac/temp/hw_design/k26_starter_kits/kr260/project/kr260_starter_kit.gen/sources_1/bd/kr260_starter_kit/synth/kr260_starter_kit.v:25]
+WARNING: [Synth 8-7071] port 'pl_clk0' of module 'kr260_starter_kit_zynq_ultra_ps_e_0_0' is unconnected for instance 'zynq_ultra_ps_e_0' [/tmp/tmp.DZjIAKcPac/temp/hw_design/k26_starter_kits/kr260/project/kr260_starter_kit.gen/sources_1/bd/kr260_starter_kit/synth/kr260_starter_kit.v:25]
+WARNING: [Synth 8-7071] port 'pl_clk1' of module 'kr260_starter_kit_zynq_ultra_ps_e_0_0' is unconnected for instance 'zynq_ultra_ps_e_0' [/tmp/tmp.DZjIAKcPac/temp/hw_design/k26_starter_kits/kr260/project/kr260_starter_kit.gen/sources_1/bd/kr260_starter_kit/synth/kr260_starter_kit.v:25]
+WARNING: [Synth 8-7023] instance 'zynq_ultra_ps_e_0' of module 'kr260_starter_kit_zynq_ultra_ps_e_0_0' has 6 connections declared, but only 2 given [/tmp/tmp.DZjIAKcPac/temp/hw_design/k26_starter_kits/kr260/project/kr260_starter_kit.gen/sources_1/bd/kr260_starter_kit/synth/kr260_starter_kit.v:25]
+INFO: [Synth 8-6155] done synthesizing module 'kr260_starter_kit' (0#1) [/tmp/tmp.DZjIAKcPac/temp/hw_design/k26_starter_kits/kr260/project/kr260_starter_kit.gen/sources_1/bd/kr260_starter_kit/synth/kr260_starter_kit.v:13]
+INFO: [Synth 8-6155] done synthesizing module 'kr260_starter_kit_wrapper' (0#1) [/tmp/tmp.DZjIAKcPac/temp/hw_design/k26_starter_kits/kr260/project/kr260_starter_kit.srcs/sources_1/imports/hdl/kr260_starter_kit_wrapper.v:13]
+WARNING: [Synth 8-7129] Port Din[1] in module xlslice_v1_0_2_xlslice is either unconnected or has no load
+WARNING: [Synth 8-7129] Port Din[0] in module xlslice_v1_0_2_xlslice is either unconnected or has no load
+---------------------------------------------------------------------------------
+Finished RTL Elaboration : Time (s): cpu = 00:00:05 ; elapsed = 00:00:06 . Memory (MB): peak = 3797.180 ; gain = 309.801 ; free physical = 141109 ; free virtual = 233406
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:05 ; elapsed = 00:00:06 . Memory (MB): peak = 3803.117 ; gain = 315.738 ; free physical = 141111 ; free virtual = 233408
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:05 ; elapsed = 00:00:06 . Memory (MB): peak = 3803.117 ; gain = 315.738 ; free physical = 141111 ; free virtual = 233408
+---------------------------------------------------------------------------------
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 3803.117 ; gain = 0.000 ; free physical = 141110 ; free virtual = 233406
+INFO: [Project 1-570] Preparing netlist for logic optimization
+
+Processing XDC Constraints
+Initializing timing engine
+Parsing XDC File [/tmp/tmp.DZjIAKcPac/temp/hw_design/k26_starter_kits/kr260/project/kr260_starter_kit.gen/sources_1/bd/kr260_starter_kit/ip/kr260_starter_kit_zynq_ultra_ps_e_0_0/kr260_starter_kit_zynq_ultra_ps_e_0_0/kr260_starter_kit_zynq_ultra_ps_e_0_0_in_context.xdc] for cell 'kr260_starter_kit_i/zynq_ultra_ps_e_0'
+Finished Parsing XDC File [/tmp/tmp.DZjIAKcPac/temp/hw_design/k26_starter_kits/kr260/project/kr260_starter_kit.gen/sources_1/bd/kr260_starter_kit/ip/kr260_starter_kit_zynq_ultra_ps_e_0_0/kr260_starter_kit_zynq_ultra_ps_e_0_0/kr260_starter_kit_zynq_ultra_ps_e_0_0_in_context.xdc] for cell 'kr260_starter_kit_i/zynq_ultra_ps_e_0'
+Parsing XDC File [/tmp/tmp.DZjIAKcPac/temp/hw_design/k26_starter_kits/kr260/project/kr260_starter_kit.srcs/constrs_1/imports/xdc/default.xdc]
+Finished Parsing XDC File [/tmp/tmp.DZjIAKcPac/temp/hw_design/k26_starter_kits/kr260/project/kr260_starter_kit.srcs/constrs_1/imports/xdc/default.xdc]
+INFO: [Project 1-236] Implementation specific constraints were found while reading constraint file [/tmp/tmp.DZjIAKcPac/temp/hw_design/k26_starter_kits/kr260/project/kr260_starter_kit.srcs/constrs_1/imports/xdc/default.xdc]. These constraints will be ignored for synthesis but will be used in implementation. Impacted constraints are listed in the file [.Xil/kr260_starter_kit_wrapper_propImpl.xdc].
+Resolution: To avoid this warning, move constraints listed in [.Xil/kr260_starter_kit_wrapper_propImpl.xdc] to another XDC file and exclude this new file from synthesis with the used_in_synthesis property (File Properties dialog in GUI) and re-run elaboration/synthesis.
+Parsing XDC File [/tmp/tmp.DZjIAKcPac/temp/hw_design/k26_starter_kits/kr260/project/kr260_starter_kit.runs/synth_1/dont_touch.xdc]
+Finished Parsing XDC File [/tmp/tmp.DZjIAKcPac/temp/hw_design/k26_starter_kits/kr260/project/kr260_starter_kit.runs/synth_1/dont_touch.xdc]
+Completed Processing XDC Constraints
+
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 3833.992 ; gain = 0.000 ; free physical = 141083 ; free virtual = 233382
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 3833.992 ; gain = 0.000 ; free physical = 141083 ; free virtual = 233382
+---------------------------------------------------------------------------------
+Finished Constraint Validation : Time (s): cpu = 00:00:16 ; elapsed = 00:00:17 . Memory (MB): peak = 3833.992 ; gain = 346.613 ; free physical = 141078 ; free virtual = 233381
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Loading Part and Timing Information
+---------------------------------------------------------------------------------
+Loading part: xck26-sfvc784-2LV-c
+INFO: [Synth 8-6742] Reading net delay rules and data
+---------------------------------------------------------------------------------
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:16 ; elapsed = 00:00:17 . Memory (MB): peak = 3833.992 ; gain = 346.613 ; free physical = 141078 ; free virtual = 233381
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying 'set_property' XDC Constraints
+---------------------------------------------------------------------------------
+Applied set_property KEEP_HIERARCHY = SOFT for kr260_starter_kit_i. (constraint file  auto generated constraint).
+Applied set_property KEEP_HIERARCHY = SOFT for kr260_starter_kit_i/xlslice_0. (constraint file  auto generated constraint).
+Applied set_property KEEP_HIERARCHY = SOFT for kr260_starter_kit_i/zynq_ultra_ps_e_0. (constraint file  auto generated constraint).
+---------------------------------------------------------------------------------
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:16 ; elapsed = 00:00:17 . Memory (MB): peak = 3833.992 ; gain = 346.613 ; free physical = 141078 ; free virtual = 233381
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:16 ; elapsed = 00:00:17 . Memory (MB): peak = 3833.992 ; gain = 346.613 ; free physical = 141077 ; free virtual = 233381
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start RTL Component Statistics 
+---------------------------------------------------------------------------------
+Detailed RTL Component Info : 
+---------------------------------------------------------------------------------
+Finished RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Part Resource Summary
+---------------------------------------------------------------------------------
+Part Resources:
+DSPs: 1248 (col length:96)
+BRAMs: 288 (col length: RAMB18 96 RAMB36 48)
+---------------------------------------------------------------------------------
+Finished Part Resource Summary
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Cross Boundary and Area Optimization
+---------------------------------------------------------------------------------
+WARNING: [Synth 8-7080] Parallel synthesis criteria is not met
+WARNING: [Synth 8-7129] Port Din[1] in module kr260_starter_kit_xlslice_0_0 is either unconnected or has no load
+WARNING: [Synth 8-7129] Port Din[0] in module kr260_starter_kit_xlslice_0_0 is either unconnected or has no load
+---------------------------------------------------------------------------------
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:17 ; elapsed = 00:00:18 . Memory (MB): peak = 3833.992 ; gain = 346.613 ; free physical = 141074 ; free virtual = 233381
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying XDC Timing Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:27 ; elapsed = 00:00:30 . Memory (MB): peak = 4342.906 ; gain = 855.527 ; free physical = 143188 ; free virtual = 235496
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Timing Optimization
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Timing Optimization : Time (s): cpu = 00:00:27 ; elapsed = 00:00:30 . Memory (MB): peak = 4342.906 ; gain = 855.527 ; free physical = 143188 ; free virtual = 235496
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Technology Mapping
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Technology Mapping : Time (s): cpu = 00:00:27 ; elapsed = 00:00:30 . Memory (MB): peak = 4352.922 ; gain = 865.543 ; free physical = 143180 ; free virtual = 235488
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished IO Insertion : Time (s): cpu = 00:00:31 ; elapsed = 00:00:34 . Memory (MB): peak = 4366.797 ; gain = 879.418 ; free physical = 143369 ; free virtual = 235676
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Instances
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Instances : Time (s): cpu = 00:00:31 ; elapsed = 00:00:34 . Memory (MB): peak = 4366.797 ; gain = 879.418 ; free physical = 143369 ; free virtual = 235676
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Rebuilding User Hierarchy
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:31 ; elapsed = 00:00:34 . Memory (MB): peak = 4366.797 ; gain = 879.418 ; free physical = 143369 ; free virtual = 235676
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Ports
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Ports : Time (s): cpu = 00:00:31 ; elapsed = 00:00:34 . Memory (MB): peak = 4366.797 ; gain = 879.418 ; free physical = 143369 ; free virtual = 235676
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:31 ; elapsed = 00:00:34 . Memory (MB): peak = 4366.797 ; gain = 879.418 ; free physical = 143369 ; free virtual = 235676
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Nets
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Nets : Time (s): cpu = 00:00:31 ; elapsed = 00:00:34 . Memory (MB): peak = 4366.797 ; gain = 879.418 ; free physical = 143369 ; free virtual = 235676
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Writing Synthesis Report
+---------------------------------------------------------------------------------
+
+Report BlackBoxes: 
++------+--------------------------------------+----------+
+|      |BlackBox name                         |Instances |
++------+--------------------------------------+----------+
+|1     |kr260_starter_kit_zynq_ultra_ps_e_0_0 |         1|
++------+--------------------------------------+----------+
+
+Report Cell Usage: 
++------+------------------------------------+------+
+|      |Cell                                |Count |
++------+------------------------------------+------+
+|1     |kr260_starter_kit_zynq_ultra_ps_e_0 |     1|
+|2     |OBUF                                |     1|
++------+------------------------------------+------+
+---------------------------------------------------------------------------------
+Finished Writing Synthesis Report : Time (s): cpu = 00:00:31 ; elapsed = 00:00:34 . Memory (MB): peak = 4366.797 ; gain = 879.418 ; free physical = 143369 ; free virtual = 235676
+---------------------------------------------------------------------------------
+Synthesis finished with 0 errors, 0 critical warnings and 3 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:00:25 ; elapsed = 00:00:27 . Memory (MB): peak = 4366.797 ; gain = 848.543 ; free physical = 143368 ; free virtual = 235675
+Synthesis Optimization Complete : Time (s): cpu = 00:00:31 ; elapsed = 00:00:34 . Memory (MB): peak = 4366.805 ; gain = 879.418 ; free physical = 143368 ; free virtual = 235676
+INFO: [Project 1-571] Translating synthesized netlist
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 4372.734 ; gain = 0.000 ; free physical = 143632 ; free virtual = 235940
+INFO: [Project 1-570] Preparing netlist for logic optimization
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 4404.422 ; gain = 0.000 ; free physical = 143615 ; free virtual = 235918
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+Synth Design complete | Checksum: 65d6ee2e
+INFO: [Common 17-83] Releasing license: Synthesis
+27 Infos, 10 Warnings, 0 Critical Warnings and 0 Errors encountered.
+synth_design completed successfully
+synth_design: Time (s): cpu = 00:00:40 ; elapsed = 00:00:42 . Memory (MB): peak = 4404.422 ; gain = 1854.184 ; free physical = 143615 ; free virtual = 235918
+INFO: [Common 17-2834] synth_design peak Physical Memory [PSS] (MB): overall = 3741.362; main = 3468.977; forked = 325.092
+INFO: [Common 17-2834] synth_design peak Virtual Memory [VSS] (MB): overall = 5333.816; main = 4404.426; forked = 980.891
+INFO: [Common 17-1381] The checkpoint '/tmp/tmp.DZjIAKcPac/temp/hw_design/k26_starter_kits/kr260/project/kr260_starter_kit.runs/synth_1/kr260_starter_kit_wrapper.dcp' has been generated.
+INFO: [runtcl-4] Executing : report_utilization -file kr260_starter_kit_wrapper_utilization_synth.rpt -pb kr260_starter_kit_wrapper_utilization_synth.pb
+INFO: [Common 17-206] Exiting Vivado at Sun May  7 23:17:16 2023...

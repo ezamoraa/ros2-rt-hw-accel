@@ -1,0 +1,15 @@
+*/*/config.old
+*/*/rootfs_config.old
+*/*/gen-machineconf.log.old
+build/
+images/linux/
+pre-built/linux/
+.petalinux/*
+!.petalinux/metadata
+*.o
+*.jou
+*.log
+/components/plnx_workspace
+/components/yocto
+/project-spec/configs/configs/Kconfig
+/project-spec/configs/rootfsconfigs/Kconfig

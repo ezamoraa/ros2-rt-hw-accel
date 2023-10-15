@@ -1,0 +1,4 @@
+vcstool==0.3.0
+argcomplete==2.0.0
+catkin-pkg==0.5.2
+ros-buildfarm==3.0.0

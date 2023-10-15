@@ -5,5 +5,4 @@ log/*
 # python cache
 **/__pycache__
 *.pyc
-
-*_ws/*  
+**/ros_ws*/

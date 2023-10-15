@@ -1,0 +1,73 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.require_version ">= 1.8.1"
+ENV['VAGRANT_DEFAULT_PROVIDER'] = 'docker'
+
+require 'yaml'
+
+if ! ENV.has_key?('SSH_AUTH_SOCK')
+    raise("SSH_AUTH_SOCK not found, please setup your ssh-agent")
+end
+
+version = File.read("tools/docker/version").strip
+registry = "docker.io/"
+
+image_name = registry + "ezamoraa/ros2-rt-hw-accel-dev:" + version
+
+$adjust_user_perm_script = <<SCRIPT
+sed -i -e "s/1000/$HOST_UID/" /etc/passwd
+sed -i -e "s/1000/$HOST_GID/" /etc/passwd
+sed -i -e "s/1000/$HOST_GID/" /etc/group
+chown -R $HOST_UID:$HOST_GID /home/ros/ 2>/dev/null 1>&2 || true
+SCRIPT
+
+Vagrant.configure("2") do |config|
+  config.vm.hostname = "ros2-rt-hw-accel-dev"
+  config.vm.provider "docker" do |docker|
+    docker.name="ros2-rt-hw-accel-dev"
+    docker.image = image_name
+    docker.has_ssh = true
+    docker.auth_server = registry
+    docker.pull = true
+    docker.privileged = true
+    docker.create_args = ["--cap-add=SYS_PTRACE"]
+  end
+
+  config.ssh.username = "ros"
+  config.ssh.forward_agent = true
+  config.ssh.forward_env = ["DISPLAY"]
+  config.ssh.pty = true
+
+  config.vm.synced_folder ".", "/home/ros/ws"
+
+  if File.exist?("/tmp/.X11-unix")
+    config.vm.synced_folder "/tmp/.X11-unix", "/tmp/.X11-unix"
+  end
+  if File.exist?(ENV['HOME'] + "/.vscode/")
+    config.vm.synced_folder ENV['HOME'] + "/.vscode/", "/home/ros/.vscode/"
+  end
+  if File.directory?(ENV["HOME"] + "/.Xauthority")
+    config.vm.synced_folder ENV["HOME"] + "/.Xauthority", "/home/ros/.Xauthority", create: true
+  end
+  if File.exist?("/tools/Xilinx")
+    config.vm.synced_folder "/tools/Xilinx", "/tools/Xilinx"
+  end
+
+  config.vm.synced_folder ENV["HOME"] + "/.config", "/home/ros/.config", create: false
+  config.vm.provision "file",
+    source: "~/.gitconfig",
+    destination: "/home/ros/.gitconfig" if File.exist?(ENV["HOME"] + "/.gitconfig")
+  config.vm.provision "file",
+    source: "~/.gitignore",
+    destination: "/home/ros/.gitignore" if File.exist?(ENV["HOME"] + "/.gitignore")
+  config.vm.provision "file",
+    source: "~/.gitalias.txt",
+    destination: "/home/ros/.gitalias.txt" if File.exist?(ENV["HOME"] + "/.gitalias.txt")
+  config.vm.provision "shell", inline: 'echo "cd /home/ros/ws/" > /etc/profile.d/ws.sh', run: "always"
+  config.vm.provision "shell", inline: $adjust_user_perm_script,
+    env: {
+      "HOST_UID" => Process.uid,
+      "HOST_GID" => Process.gid
+    }
+end
