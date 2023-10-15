@@ -1,0 +1,9 @@
+build*/
+log/*
+.vagrant
+
+# python cache
+**/__pycache__
+*.pyc
+
+*_ws/*  
