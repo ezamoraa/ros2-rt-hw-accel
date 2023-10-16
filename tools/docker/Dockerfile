@@ -20,6 +20,7 @@ RUN apt-get update && apt-get install -y \
     apt-utils zip unzip \
     wget iputils-ping openssh-client net-tools \
     linux-tools-generic lttng-tools liblttng-ust-dev \
+    device-tree-compiler \
     python3-lttng python3-pip \
     && rm -rf /var/lib/apt/lists/*
 
