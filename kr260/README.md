@@ -61,6 +61,7 @@ On the dev container:
 mkdir -p ros_ws
 cd ros_ws
 mkdir src
+# TODO: Update to support ros-acceleration forks
 vcs import src --recursive < ../krs.repos
 rosdep update
 rosdep install --from-paths src --ignore-src -r -y
@@ -91,7 +92,7 @@ mkdir -p ~/ros_ws/install
 On the dev machine (ros_ws):
 
 ```bash
-scp -r install-kr260-ubuntu/* petalinux@192.168.1.2:~/ros_ws/install
+scp -r install-kr260-ubuntu/* petalinux@192.168.1.10:~/ros_ws/install
 ```
 
 On the KR260:
@@ -99,7 +100,7 @@ On the KR260:
 ```bash
 sudo su  # use root to facilitate loading acceleration kernels
 source /usr/bin/ros_setup.sh
-COLCON_CURRENT_PREFIX=/home/petalinux/ros_ws/install . ./local_setup.sh
+COLCON_CURRENT_PREFIX=/home/petalinux/ros_ws/install . /home/petalinux/ros_ws/install/local_setup.sh
 ```
 
 ### Load acceleration kernel
@@ -110,4 +111,16 @@ ros2 acceleration list
 ros2 acceleration select offloaded_doublevadd_publisher
 cd /home/petalinux/ros_ws/install/lib/offloaded_doublevadd_publisher/
 ros2 run offloaded_doublevadd_publisher offloaded_doublevadd_publisher
+```
+
+## Vitis platform update process
+
+TODO: Document
+
+- Generate HW platform in Vivado (XSA)
+- Generate platform in Vitis
+- Reconfigure Petalinux project
+
+```bash
+petalinux-config --get-hw-description <xsa-file-path>
 ```
