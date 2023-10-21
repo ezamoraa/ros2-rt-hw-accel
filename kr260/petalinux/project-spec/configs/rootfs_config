@@ -2098,8 +2098,8 @@ CONFIG_libdfx=y
 #
 # xrt
 #
-# CONFIG_xrt is not set
-# CONFIG_xrt-dev is not set
+CONFIG_xrt=y
+CONFIG_xrt-dev=y
 # CONFIG_xrt-dbg is not set
 
 #
@@ -2477,10 +2477,10 @@ CONFIG_linux-xlnx-udev-rules=y
 #
 # lttng-ust 
 #
-# CONFIG_lttng-ust is not set
-# CONFIG_lttng-ust-dev is not set
+CONFIG_lttng-ust=y
+CONFIG_lttng-ust-dev=y
 # CONFIG_lttng-ust-dbg is not set
-# CONFIG_lttng-ust-bin is not set
+CONFIG_lttng-ust-bin=y
 
 #
 # m4 
