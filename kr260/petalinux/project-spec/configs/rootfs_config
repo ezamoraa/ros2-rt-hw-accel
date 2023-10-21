@@ -2558,21 +2558,21 @@ CONFIG_lttng-ust-bin=y
 #
 # openamp-fw-echo-testd 
 #
-# CONFIG_openamp-fw-echo-testd is not set
+CONFIG_openamp-fw-echo-testd=y
 # CONFIG_openamp-fw-echo-testd-dev is not set
 # CONFIG_openamp-fw-echo-testd-dbg is not set
 
 #
 # openamp-fw-mat-muld 
 #
-# CONFIG_openamp-fw-mat-muld is not set
+CONFIG_openamp-fw-mat-muld=y
 # CONFIG_openamp-fw-mat-muld-dev is not set
 # CONFIG_openamp-fw-mat-muld-dbg is not set
 
 #
 # openamp-fw-rpc-demo 
 #
-# CONFIG_openamp-fw-rpc-demo is not set
+CONFIG_openamp-fw-rpc-demo=y
 # CONFIG_openamp-fw-rpc-demo-dbg is not set
 # CONFIG_openamp-fw-rpc-demo-dev is not set
 
@@ -3986,8 +3986,8 @@ CONFIG_u-boot-tools=y
 #
 # packagegroup-petalinux-openamp 
 #
-# CONFIG_packagegroup-petalinux-openamp is not set
-# CONFIG_packagegroup-petalinux-openamp-dev is not set
+CONFIG_packagegroup-petalinux-openamp=y
+CONFIG_packagegroup-petalinux-openamp-dev=y
 # CONFIG_packagegroup-petalinux-openamp-dbg is not set
 
 #

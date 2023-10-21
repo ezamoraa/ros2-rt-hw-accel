@@ -38,11 +38,7 @@ petalinux-package --boot --u-boot --force
 petalinux-package --wic --wks project-spec/image/rootfs.wks --bootfiles "ramdisk.cpio.gz.u-boot boot.scr Image system.dtb"
 ```
 
-- Flash WIC to SD card
-
-```bash
-sudo dd if=images/linux/petalinux-sdimage.wic of=/dev/<sd-card-device> conv=fsync status=progress bs=32M
-```
+- Flash WIC to SD card using a tool like Balena Etcher
 
 ## Setup ROS 2 workspace on KR260
 
