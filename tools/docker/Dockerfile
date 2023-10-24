@@ -20,8 +20,8 @@ RUN apt-get update && apt-get install -y \
     apt-utils zip unzip \
     wget iputils-ping openssh-client net-tools \
     linux-tools-generic lttng-tools liblttng-ust-dev \
+    python3-lttng python3-pip python3-venv \
     device-tree-compiler \
-    python3-lttng python3-pip \
     && rm -rf /var/lib/apt/lists/*
 
 # Python dependencies
@@ -46,6 +46,9 @@ RUN apt-get update && apt-get --yes --no-install-recommends install \
 RUN apt-get update && apt install -y \
     gcc-aarch64-linux-gnu g++-aarch64-linux-gnu \
     libtinfo5 locales
+
+# micro-ROS dependencies
+RUN pip3 install catkin_pkg lark-parser empy colcon-common-extensions
 
 # Configure locales
 ENV LANG=en_US.UTF-8
