@@ -4077,9 +4077,9 @@ CONFIG_imagefeature-hwcodecs=y
 CONFIG_imagefeature-package-management=y
 CONFIG_package-feed-uris=""
 CONFIG_package-feed-archs=""
-# CONFIG_imagefeature-debug-tweaks is not set
-# CONFIG_imagefeature-empty-root-password is not set
-# CONFIG_imagefeature-serial-autologin-root is not set
+CONFIG_imagefeature-debug-tweaks=y
+CONFIG_imagefeature-empty-root-password=y
+CONFIG_imagefeature-serial-autologin-root=y
 CONFIG_Init-manager-systemd=y
 # CONFIG_Init-manager-sysvinit is not set
 
@@ -4094,7 +4094,7 @@ CONFIG_packagegroup-ros2-kria=y
 #
 # PetaLinux RootFS Settings
 #
-CONFIG_ADD_EXTRA_USERS="root:root;petalinux::passwd-expire;"
+CONFIG_ADD_EXTRA_USERS="root:root;petalinux:petalinux;"
 CONFIG_CREATE_NEW_GROUPS="aie;"
 CONFIG_ADD_USERS_TO_GROUPS="petalinux:audio,video,aie,input;"
 CONFIG_ADD_USERS_TO_SUDOERS="petalinux"
