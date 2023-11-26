@@ -77,6 +77,14 @@ colcon acceleration select kr260
 colcon build --build-base=build-kr260 --install-base=install-kr260-ubuntu --merge-install --mixin kr260 --packages-select ament_acceleration ament_vitis vitis_common ros2acceleration offloaded_doublevadd_publisher
 ```
 
+```bash
+# TODO: Add image_transport to Petalinux image
+# This is a hack to add libclass_loader dependency to RPATH and build image_transport (manually copied to src from image_common)
+cp ./aarch64-xilinx-linux/opt/ros/humble/lib/libclass_loader.so ./aarch64-xilinx-linux/usr/lib/
+
+colcon build --build-base=build-kr260 --install-base=install-kr260-ubuntu --merge-install --mixin kr260 --packages-select ament_acceleration ament_vitis vitis_common ros2acceleration tracetools_image_pipeline image_proc image_transport perception_2nodes perception_3nodes
+```
+
 ### KR260 workspace setup
 
 On the KR260:
@@ -88,15 +96,25 @@ mkdir -p ~/ros_ws/install
 On the dev machine (ros_ws):
 
 ```bash
-scp -r install-kr260-ubuntu/* petalinux@192.168.1.10:~/ros_ws/install
+scp -r install-kr260-ubuntu/* root@192.168.1.10:~/ros_ws/install
+# Hack to install missing system libraries (should add to Petalinux image)
+rsync --progress -avhe ssh ./firmware/kr260/sysroots/aarch64-xilinx-linux/usr/lib/{libgdal*,libogdi*,libmfhd*,libdfalt*,libarmadillo*,aarch64-linux-gnu/*.so*,aarch64-linux-gnu/blas/libblas*,aarch64-linux-gnu/lapack/liblapack*,../../opt/ros/humble/lib/*} --exclude libc.so*  root@192.168.1.10:~/ros_ws/install/lib/sysroot/
 ```
 
 On the KR260:
 
 ```bash
+# Hack to fix symlinks from copied missing system libraries (should add to Petalinux image)
+rm /home/root/ros_ws/install/lib/sysroot/liblapack.so.3 /home/root/ros_ws/install/lib/sysroot/libblas.so.3
+ln -s /home/root/ros_ws/install/lib/sysroot/libblas.so.3.10.0 /home/root/ros_ws/install/lib/sysroot/libblas.so.3
+ln -s /home/root/ros_ws/install/lib/sysroot/liblapack.so.3.10.0 /home/root/ros_ws/install/lib/sysroot/liblapack.so.3
+```
+
+```bash
 sudo su  # use root to facilitate loading acceleration kernels
 source /usr/bin/ros_setup.sh
-COLCON_CURRENT_PREFIX=/home/petalinux/ros_ws/install . /home/petalinux/ros_ws/install/local_setup.sh
+COLCON_CURRENT_PREFIX=/home/root/ros_ws/install . /home/root/ros_ws/install/local_setup.sh
+export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/root/ros_ws/install/lib/sysroot:/home/root/ros_ws/install/lib/sysroot/aarch64-linux-gnu/
 ```
 
 ### Load acceleration kernel
@@ -104,9 +122,18 @@ COLCON_CURRENT_PREFIX=/home/petalinux/ros_ws/install . /home/petalinux/ros_ws/in
 ```bash
 ros2 acceleration stop; ros2 acceleration start
 ros2 acceleration list
+```
+
+```bash
 ros2 acceleration select offloaded_doublevadd_publisher
-cd /home/petalinux/ros_ws/install/lib/offloaded_doublevadd_publisher/
+cd /home/root/ros_ws/install/lib/offloaded_doublevadd_publisher/
 ros2 run offloaded_doublevadd_publisher offloaded_doublevadd_publisher
+```
+
+```bash
+ros2 acceleration select perception_3nodes
+cd /home/root/ros_ws/install/lib/perception_3nodes/
+ros2 run perception_3nodes perception_3nodes_fpga
 ```
 
 ## Vitis platform update process

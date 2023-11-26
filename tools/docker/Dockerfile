@@ -43,7 +43,7 @@ RUN apt-get update && apt-get --yes --no-install-recommends install \
     sed -i 's/AcceptEnv/# AcceptEnv/' /etc/ssh/sshd_config
 
 # ROS 2 acceleration firmware dependencies
-RUN apt-get update && apt install -y \
+RUN apt-get update && apt-get install -y \
     gcc-aarch64-linux-gnu g++-aarch64-linux-gnu \
     libtinfo5 locales
 
