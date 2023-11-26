@@ -136,6 +136,12 @@ cd /home/root/ros_ws/install/lib/perception_3nodes/
 ros2 run perception_3nodes perception_3nodes_fpga
 ```
 
+```bash
+ros2 acceleration select rt_hw_accel_demo
+cd /home/root/ros_ws/install/lib/rt_hw_accel_demo/
+ros2 run rt_hw_accel_demo fpga_graph
+```
+
 ## Vitis platform update process
 
 TODO: Document

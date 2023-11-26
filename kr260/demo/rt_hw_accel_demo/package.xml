@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<?xml-model href="http://download.ros.org/schema/package_format2.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
+<package format="2">
+  <name>rt_hw_accel_demo</name>
+  <version>0.3.1</version>
+  <description>
+    Package implementing demo application using the application processing unit (APU),
+    the real-time processing unit (RPU) and the FPGA hardware acceleration features
+    in a Kria KR260 board.
+    This is based on the ROS 2 Hardware Acceleration Working Group examples.
+  </description>
+  <maintainer email="esteban.zamora.al@gmail.com">Esteban Zamora Alvarado</maintainer>
+  <license>Apache License 2.0</license>
+  <maintainer email="esteban.zamora.al@gmail.com">Esteban Zamora Alvarado</maintainer>
+
+  <buildtool_depend>ament_cmake_auto</buildtool_depend>
+  <buildtool_depend>ament_vitis</buildtool_depend>
+  <buildtool_depend>ament_cuda</buildtool_depend>
+
+  <depend>image_proc</depend>
+  <depend>rclcpp</depend>
+  <depend>rclcpp_components</depend>
+  <depend>rt_hw_accel_msgs</depend>
+  <depend>tracetools_image_pipeline</depend>
+  <depend>vitis_common</depend>
+
+  <test_depend>ament_lint_auto</test_depend>
+  <test_depend>ament_lint_common</test_depend>
+
+  <export>
+    <build_type>ament_cmake</build_type>
+  </export>
+</package>
