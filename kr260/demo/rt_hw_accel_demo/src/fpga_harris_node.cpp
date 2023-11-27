@@ -24,8 +24,7 @@
 #include <mutex>
 #include <vector>
 
-#include "geometry_msgs/Point.hpp"
-#include "rt_hw_accel_msgs/PointArray.hpp"
+#include "rt_hw_accel_msgs/msg/point.hpp"
 #include "tracetools_image_pipeline/tracetools.h"
 #include "fpga_harris_node.hpp"
 
@@ -60,6 +59,8 @@ HarrisNodeFPGA::HarrisNodeFPGA(const rclcpp::NodeOptions & options)
   // Create image sub
   sub_image_ = image_transport::create_subscription(
     this, "image", std::bind(&HarrisNodeFPGA::imageCb, this, std::placeholders::_1), "raw");
+  // Create corners pub
+  pub_corners_ = this->create_publisher<CornersMessage>("/microROS/corners", 10);
 
   myHarris_qualityLevel = this->declare_parameter<int>("myHarris_qualityLevel", 50);
   max_qualityLevel = this->declare_parameter<int>("max_qualityLevel", 100);
@@ -114,7 +115,8 @@ size_t HarrisNodeFPGA::get_msg_size(sensor_msgs::msg::CameraInfo::ConstSharedPtr
   return info_msg_size;
 }
 
-void HarrisNodeFPGA::harrisImage_fpga(const cv::Mat& in_img, cv::Mat& harris_img) const
+void HarrisNodeFPGA::harrisImage_fpga(const cv::Mat& in_img, cv::Mat& harris_img,
+                                      CornersMessage& corners_msg) const
 {
   cv::Mat img_gray;
   cv::Mat hls_out_img;
@@ -122,15 +124,11 @@ void HarrisNodeFPGA::harrisImage_fpga(const cv::Mat& in_img, cv::Mat& harris_img
   cv::RNG rng(12345);
 
   uint16_t Thresh;  // Threshold for HLS
-  float Th;
   if (FILTER_WIDTH == 3) {
-      Th = 30532960.00;
       Thresh = 442;
   } else if (FILTER_WIDTH == 5) {
-      Th = 902753878016.0;
       Thresh = 3109;
   } else if (FILTER_WIDTH == 7) {
-      Th = 41151168289701888.000000;
       Thresh = 566;
   }
 
@@ -204,10 +202,26 @@ void HarrisNodeFPGA::harrisImage_fpga(const cv::Mat& in_img, cv::Mat& harris_img
 
   queue_->finish();
 
-  // harris_img = hls_out_img.clone();
+  // Populate corners_msg with the detected corners (max MAXCORNERS)
+  Corner corner;
+  corners_msg.points.reserve(MAXCORNERS); // Allocate N entries
+
+  for (int j = 1; j < hls_out_img.rows - 1; j++) {
+      for (int i = 1; i < hls_out_img.cols - 1; i++) {
+          if ((int) hls_out_img.at<unsigned char>(j, i)) {
+            corner.x = i;
+            corner.y = j;
+            corners_msg.points.push_back(corner);
+            if (corners_msg.points.size() >= MAXCORNERS) {
+              break;
+            }
+          }
+      }
+  }
 
   // Mark with circles in resulting image
   harris_img = in_img.clone();
+  // harris_img = hls_out_img.clone();
 
   /// Drawing a circle around corners
   for (int j = 1; j < hls_out_img.rows - 1; j++) {
@@ -277,8 +291,9 @@ void HarrisNodeFPGA::imageCb(sensor_msgs::msg::Image::ConstSharedPtr image_msg)
     image_msg->header.stamp.sec);
 
   cv::Mat in_img, ocv_out_img;
+  CornersMessage corners_msg;
   cv_ptr->image.copyTo(in_img);
-  harrisImage_fpga(in_img, ocv_out_img);
+  harrisImage_fpga(in_img, ocv_out_img, corners_msg);
 
   TRACEPOINT(
     image_proc_harris_fini,
@@ -291,11 +306,13 @@ void HarrisNodeFPGA::imageCb(sensor_msgs::msg::Image::ConstSharedPtr image_msg)
   // Allocate new rectified image message
   sensor_msgs::msg::Image::SharedPtr harris_msg = cv_bridge::CvImage(
       image_msg->header,
-      // "mono8",
-      image_msg->encoding,
+      image_msg->encoding, // "mono8",
       ocv_out_img).toImageMsg();
 
   pub_image_.publish(harris_msg);
+
+  corners_msg.stamp = image_msg->header.stamp;
+  pub_corners_->publish(corners_msg);
 
   TRACEPOINT(
     image_proc_harris_cb_fini,

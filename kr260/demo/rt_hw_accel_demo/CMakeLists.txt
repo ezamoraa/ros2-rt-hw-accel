@@ -13,7 +13,6 @@ endif()
 find_package(ament_vitis QUIET)
 find_package(ament_cmake_auto REQUIRED)
 find_package(rt_hw_accel_msgs REQUIRED)
-find_package(geometry_msgs REQUIRED)
 ament_auto_find_build_dependencies()
 
 include_directories(include)
@@ -34,9 +33,8 @@ if (DEFINED ROS_VITIS)
   #####################
 
   # cpu_harris_node component, dependency with hls_stream.h Vitis-related header
-  ament_auto_add_library(cpu_harris_node SHARED
-    src/cpu_harris_node.cpp)
-  ament_target_dependencies(cpu_harris_node tracetools_image_pipeline rt_hw_accel_msgs geometry_msgs)
+  ament_auto_add_library(cpu_harris_node SHARED src/cpu_harris_node.cpp)
+  ament_target_dependencies(cpu_harris_node tracetools_image_pipeline rt_hw_accel_msgs)
   target_include_directories(cpu_harris_node PUBLIC
     # $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/include/vitis_common>
     $ENV{XILINX_HLS}/common/technology/autopilot
@@ -47,7 +45,7 @@ if (DEFINED ROS_VITIS)
 
   # fpga_harris_node component (with OpenCL)
   ament_auto_add_library(fpga_harris_node SHARED src/fpga_harris_node.cpp)
-  ament_target_dependencies(cpu_harris_node tracetools_image_pipeline rt_hw_accel_msgs geometry_msgs)
+  ament_target_dependencies(fpga_harris_node tracetools_image_pipeline rt_hw_accel_msgs)
   target_include_directories(fpga_harris_node PUBLIC
     # $<INSTALL_INTERFACE:${CMAKE_INSTALL_PREFIX}/include/vitis_common>
     $ENV{XILINX_HLS}/common/technology/autopilot

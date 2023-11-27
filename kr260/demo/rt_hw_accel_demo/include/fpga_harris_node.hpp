@@ -35,18 +35,26 @@
 #include <vitis_common/common/ros_opencl_120.hpp>
 #include "opencv2/imgproc.hpp"
 
+#include "rt_hw_accel_msgs/msg/point.hpp"
+#include "rt_hw_accel_msgs/msg/point_array.hpp"
+
 namespace rt_hw_accel_demo
 {
+  using Corner = rt_hw_accel_msgs::msg::Point;
+  using CornersMessage = rt_hw_accel_msgs::msg::PointArray;
+  using CornersPublisher = rclcpp::Publisher<CornersMessage>;
 
 class HarrisNodeFPGA
   : public rclcpp::Node
 {
+
 public:
   explicit HarrisNodeFPGA(const rclcpp::NodeOptions &);
 
 protected:
   image_transport::Publisher pub_image_;
   image_transport::Subscriber sub_image_;
+  CornersPublisher::SharedPtr pub_corners_;
 
   int myHarris_qualityLevel;
   int max_qualityLevel;
@@ -64,7 +72,8 @@ protected:
 
   void imageCb(sensor_msgs::msg::Image::ConstSharedPtr image_msg);
 
-  void harrisImage_fpga(const cv::Mat& in_img, cv::Mat& harris_img) const;
+  void harrisImage_fpga(const cv::Mat& in_img, cv::Mat& harris_img,
+                        CornersMessage& corners_msg) const;
 };
 
 }  // namespace rt_hw_accel_demo

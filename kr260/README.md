@@ -85,6 +85,10 @@ cp ./aarch64-xilinx-linux/opt/ros/humble/lib/libclass_loader.so ./aarch64-xilinx
 colcon build --build-base=build-kr260 --install-base=install-kr260-ubuntu --merge-install --mixin kr260 --packages-select ament_acceleration ament_vitis vitis_common ros2acceleration tracetools_image_pipeline image_proc image_transport perception_2nodes perception_3nodes
 ```
 
+```bash
+colcon build --build-base=build-kr260 --install-base=install-kr260-ubuntu --merge-install --mixin kr260 --packages-select ament_acceleration ament_vitis vitis_common ros2acceleration tracetools_image_pipeline image_proc image_transport rt_hw_accel_msgs rt_hw_accel_demo
+```
+
 ### KR260 workspace setup
 
 On the KR260:
