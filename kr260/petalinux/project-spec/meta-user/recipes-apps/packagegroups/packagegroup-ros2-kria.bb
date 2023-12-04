@@ -113,5 +113,21 @@ RDEPENDS:${PN} = "\
     zocl \
     opencl-headers-dev \
     opencl-clhpp-dev \
+    ros2bag \
+    micro-ros-msgs \
+    geometry2 \
+    ros2trace \
+    tracetools \
+    tracetools-trace \
+    tracetools-launch \
+    tracetools-acceleration \
+    opencv \
+    class-loader \
+    message-filters \
+    image-transport \
+    vision-opencv \
     ${ROS_SYSROOT_BUILD_DEPENDENCIES} \
 "
+#    image-proc \
+#    image-common \
+#    image-pipeline \
