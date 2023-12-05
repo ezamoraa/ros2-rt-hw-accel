@@ -116,6 +116,7 @@ RDEPENDS:${PN} = "\
     ros2bag \
     micro-ros-msgs \
     geometry2 \
+    lttng-ust \
     ros2trace \
     tracetools \
     tracetools-trace \
@@ -128,6 +129,3 @@ RDEPENDS:${PN} = "\
     vision-opencv \
     ${ROS_SYSROOT_BUILD_DEPENDENCIES} \
 "
-#    image-proc \
-#    image-common \
-#    image-pipeline \

@@ -2174,7 +2174,7 @@ CONFIG_xrt-dev=y
 #
 # babeltrace 
 #
-# CONFIG_babeltrace is not set
+CONFIG_babeltrace=y
 # CONFIG_babeltrace-dbg is not set
 # CONFIG_babeltrace-dev is not set
 
