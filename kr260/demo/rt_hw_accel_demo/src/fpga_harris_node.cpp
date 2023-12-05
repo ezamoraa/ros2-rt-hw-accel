@@ -42,7 +42,7 @@
 #define FILTER_WIDTH 3
 #define BLOCK_WIDTH 3
 #define NMS_RADIUS 1
-#define MAXCORNERS 1024
+#define MAXCORNERS 256 // 1024
 
 // #define WIDTH 1280
 // #define HEIGHT 960
@@ -67,6 +67,8 @@ HarrisNodeFPGA::HarrisNodeFPGA(const rclcpp::NodeOptions & options)
   max_qualityLevel = this->declare_parameter<int>("max_qualityLevel", 100);
   blockSize_harris = this->declare_parameter<int>("blockSize_harris", 3);
   apertureSize = this->declare_parameter<int>("apertureSize", 3);
+  do_pub_corners = this->declare_parameter<bool>("pubCorners", true);
+  do_pub_image = this->declare_parameter<bool>("pubImage", true);
 
   cl_int err;
   unsigned fileBufSize;
@@ -205,41 +207,45 @@ void HarrisNodeFPGA::harrisImage(const cv::Mat& in_img,
 
   queue_->finish();
 
-  // Populate corners_msg with the detected corners (max MAXCORNERS)
-  Corner corner;
-  corners_msg.points.reserve(MAXCORNERS); // Allocate N entries
+  if (do_pub_corners) {
+    // Populate corners_msg with the detected corners (max MAXCORNERS)
+    Corner corner;
+    corners_msg.points.reserve(MAXCORNERS); // Allocate N entries
 
-  for (int j = 1; j < hls_out_img.rows - 1; j++) {
-      for (int i = 1; i < hls_out_img.cols - 1; i++) {
-          if ((int) hls_out_img.at<unsigned char>(j, i)) {
-            corner.x = i;
-            corner.y = j;
-            corners_msg.points.push_back(corner);
-            if (corners_msg.points.size() >= MAXCORNERS) {
-              break;
+    for (int j = 1; j < hls_out_img.rows - 1; j++) {
+        for (int i = 1; i < hls_out_img.cols - 1; i++) {
+            if ((int) hls_out_img.at<unsigned char>(j, i)) {
+              corner.x = i;
+              corner.y = j;
+              corners_msg.points.push_back(corner);
+              if (corners_msg.points.size() >= MAXCORNERS) {
+                break;
+              }
             }
-          }
-      }
+        }
+    }
   }
 
-  // Mark with circles in resulting image
-  harris_img = in_img.clone();
+  if (do_pub_image) {
+    // Mark with circles in resulting image
+    harris_img = in_img.clone();
 
-  /// Drawing a circle around corners
-  for (int j = 1; j < hls_out_img.rows - 1; j++) {
-      for (int i = 1; i < hls_out_img.cols - 1; i++) {
-          if ((int) hls_out_img.at<unsigned char>(j, i)) {
-            cv::circle(
-              harris_img,
-              cv::Point(i, j),
-              4,
-              cv::Scalar(
-                rng.uniform(0, 255),
-                rng.uniform(0, 255),
-                rng.uniform(0, 255)),
-              -1, 8, 0);
-          }
-      }
+    /// Drawing a circle around corners
+    for (int j = 1; j < hls_out_img.rows - 1; j++) {
+        for (int i = 1; i < hls_out_img.cols - 1; i++) {
+            if ((int) hls_out_img.at<unsigned char>(j, i)) {
+              cv::circle(
+                harris_img,
+                cv::Point(i, j),
+                4,
+                cv::Scalar(
+                  rng.uniform(0, 255),
+                  rng.uniform(0, 255),
+                  rng.uniform(0, 255)),
+                -1, 8, 0);
+            }
+        }
+    }
   }
 }
 
@@ -256,17 +262,18 @@ void HarrisNodeFPGA::imageCb(sensor_msgs::msg::Image::ConstSharedPtr image_msg)
     0);
   // std::cout << "INFO: Running imageCb." << std::endl;
 
-  if (pub_image_.getNumSubscribers() < 1) {
-    TRACEPOINT(
-      image_proc_harris_cb_fini,
-      static_cast<const void *>(this),
-      static_cast<const void *>(&(*image_msg)),
-      nullptr,
-      image_msg->header.stamp.nanosec,
-      image_msg->header.stamp.sec,
-      get_msg_size(image_msg),
-      0);
-  }
+  // if (pub_image_.getNumSubscribers() < 1) {
+  //   TRACEPOINT(
+  //     image_proc_harris_cb_fini,
+  //     static_cast<const void *>(this),
+  //     static_cast<const void *>(&(*image_msg)),
+  //     nullptr,
+  //     image_msg->header.stamp.nanosec,
+  //     image_msg->header.stamp.sec,
+  //     get_msg_size(image_msg),
+  //     0);
+  //     return;
+  // }
   cv_bridge::CvImagePtr cv_ptr;
 
   try {
@@ -282,6 +289,7 @@ void HarrisNodeFPGA::imageCb(sensor_msgs::msg::Image::ConstSharedPtr image_msg)
       image_msg->header.stamp.sec,
       get_msg_size(image_msg),
       0);
+      return;
   }
 
   TRACEPOINT(
@@ -305,16 +313,20 @@ void HarrisNodeFPGA::imageCb(sensor_msgs::msg::Image::ConstSharedPtr image_msg)
     image_msg->header.stamp.nanosec,
     image_msg->header.stamp.sec);
 
-  // Allocate new rectified image message
-  sensor_msgs::msg::Image::SharedPtr harris_msg = cv_bridge::CvImage(
-      image_msg->header,
-      image_msg->encoding, // "mono8",
-      ocv_out_img).toImageMsg();
+  if (do_pub_image) {
+    // Allocate new image message
+    sensor_msgs::msg::Image::SharedPtr harris_msg = cv_bridge::CvImage(
+        image_msg->header,
+        image_msg->encoding, // "mono8",
+        ocv_out_img).toImageMsg();
 
-  pub_image_.publish(harris_msg);
+    pub_image_.publish(harris_msg);
+  }
 
-  corners_msg.stamp = image_msg->header.stamp;
-  pub_corners_->publish(corners_msg);
+  if (do_pub_corners) {
+    corners_msg.stamp = image_msg->header.stamp;
+    pub_corners_->publish(corners_msg);
+  }
 
   TRACEPOINT(
     image_proc_harris_cb_fini,

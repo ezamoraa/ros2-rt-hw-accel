@@ -60,6 +60,8 @@ protected:
   int apertureSize;
 
   std::mutex connect_mutex_;
+  bool do_pub_corners;
+  bool do_pub_image;
 
   size_t get_msg_size(sensor_msgs::msg::Image::ConstSharedPtr image_msg);
   size_t get_msg_size(sensor_msgs::msg::CameraInfo::ConstSharedPtr info_msg);

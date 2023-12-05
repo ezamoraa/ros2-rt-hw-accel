@@ -37,7 +37,7 @@
 #define FILTER_WIDTH 3
 #define BLOCK_WIDTH 3
 #define NMS_RADIUS 1
-#define MAXCORNERS 1024
+#define MAXCORNERS 256 // 1024
 
 namespace rt_hw_accel_demo
 {
@@ -57,6 +57,8 @@ HarrisNodeCPU::HarrisNodeCPU(const rclcpp::NodeOptions & options)
   max_qualityLevel = this->declare_parameter<int>("max_qualityLevel", 100);
   blockSize_harris = this->declare_parameter<int>("blockSize_harris", 3);
   apertureSize = this->declare_parameter<int>("apertureSize", 3);
+  do_pub_corners = this->declare_parameter<bool>("pubCorners", true);
+  do_pub_image = this->declare_parameter<bool>("pubImage", true);
 }
 
 size_t HarrisNodeCPU::get_msg_size(sensor_msgs::msg::Image::ConstSharedPtr image_msg){
@@ -100,40 +102,44 @@ void HarrisNodeCPU::harrisImage(const cv::Mat& in_img,
   ocv_out_img.create(img_gray.rows, img_gray.cols, CV_8U); // create memory for opencv output image  // NOLINT
   ocv_ref(img_gray, ocv_out_img, Th);
 
-  // Populate corners_msg with the detected corners (max MAXCORNERS)
-  Corner corner;
-  corners_msg.points.reserve(MAXCORNERS); // Allocate N entries
+  if (do_pub_corners) {
+    // Populate corners_msg with the detected corners (max MAXCORNERS)
+    Corner corner;
+    corners_msg.points.reserve(MAXCORNERS); // Allocate N entries
 
-  for (int j = 1; j < ocv_out_img.rows - 1; j++) {
-      for (int i = 1; i < ocv_out_img.cols - 1; i++) {
-          if ((int) ocv_out_img.at<unsigned char>(j, i)) {
-            corner.x = i;
-            corner.y = j;
-            corners_msg.points.push_back(corner);
-            if (corners_msg.points.size() >= MAXCORNERS) {
-              break;
+    for (int j = 1; j < ocv_out_img.rows - 1; j++) {
+        for (int i = 1; i < ocv_out_img.cols - 1; i++) {
+            if ((int) ocv_out_img.at<unsigned char>(j, i)) {
+              corner.x = i;
+              corner.y = j;
+              corners_msg.points.push_back(corner);
+              if (corners_msg.points.size() >= MAXCORNERS) {
+                break;
+              }
             }
-          }
-      }
+        }
+    }
   }
 
-  /// Drawing a circle around corners
-  harris_img = in_img.clone();
+  if (do_pub_image) {
+    /// Drawing a circle around corners
+    harris_img = in_img.clone();
 
-  for (int j = 1; j < ocv_out_img.rows - 1; j++) {
-      for (int i = 1; i < ocv_out_img.cols - 1; i++) {
-          if ((int) ocv_out_img.at<unsigned char>(j, i)) {
-            cv::circle(
-              harris_img,
-              cv::Point(i, j),
-              4,
-              cv::Scalar(
-                rng.uniform(0, 255),
-                rng.uniform(0, 255),
-                rng.uniform(0, 255)),
-              -1, 8, 0);
-          }
-      }
+    for (int j = 1; j < ocv_out_img.rows - 1; j++) {
+        for (int i = 1; i < ocv_out_img.cols - 1; i++) {
+            if ((int) ocv_out_img.at<unsigned char>(j, i)) {
+              cv::circle(
+                harris_img,
+                cv::Point(i, j),
+                4,
+                cv::Scalar(
+                  rng.uniform(0, 255),
+                  rng.uniform(0, 255),
+                  rng.uniform(0, 255)),
+                -1, 8, 0);
+            }
+        }
+    }
   }
 }
 
@@ -149,18 +155,18 @@ void HarrisNodeCPU::imageCb(sensor_msgs::msg::Image::ConstSharedPtr image_msg)
     get_msg_size(image_msg),
     0);
 
-  if (pub_image_.getNumSubscribers() < 1) {
-    TRACEPOINT(
-      image_proc_harris_cb_fini,
-      static_cast<const void *>(this),
-      static_cast<const void *>(&(*image_msg)),
-      nullptr,
-      image_msg->header.stamp.nanosec,
-      image_msg->header.stamp.sec,
-      get_msg_size(image_msg),
-      0);
-    return;
-  }
+  // if (pub_image_.getNumSubscribers() < 1) {
+  //   TRACEPOINT(
+  //     image_proc_harris_cb_fini,
+  //     static_cast<const void *>(this),
+  //     static_cast<const void *>(&(*image_msg)),
+  //     nullptr,
+  //     image_msg->header.stamp.nanosec,
+  //     image_msg->header.stamp.sec,
+  //     get_msg_size(image_msg),
+  //     0);
+  //   return;
+  // }
 
   cv_bridge::CvImagePtr cv_ptr;
 
@@ -207,7 +213,13 @@ void HarrisNodeCPU::imageCb(sensor_msgs::msg::Image::ConstSharedPtr image_msg)
       image_msg->encoding,
       ocv_out_img).toImageMsg();
 
-  pub_image_.publish(harris_msg);
+  if (do_pub_image) {
+    pub_image_.publish(harris_msg);
+  }
+  if (do_pub_corners) {
+    corners_msg.stamp = image_msg->header.stamp;
+    pub_corners_->publish(corners_msg);
+  }
 
   TRACEPOINT(
     image_proc_harris_cb_fini,

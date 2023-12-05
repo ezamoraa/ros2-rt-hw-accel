@@ -40,27 +40,28 @@ def generate_launch_description():
         # events_kernel=DEFAULT_EVENTS_KERNEL,
     )
 
-    # Use a multi-threaded executor defined in the Node
-    fpga_graph_node = Node(
-        package="rt_hw_accel_demo",
-        executable="fpga_graph",
-        name="fpga_graph",
-        remappings=[
-            ("image", "/camera/image_raw"),
-            ("camera_info", "/camera/camera_info"),
+    rt_hw_accel_demo_container = ComposableNodeContainer(
+        name="rt_hw_accel_demo_container",
+        namespace="",
+        package="rclcpp_components",
+        executable="component_container",
+        composable_node_descriptions=[
+            ComposableNode(
+                package="rt_hw_accel_demo",
+                plugin="rt_hw_accel_demo::HarrisNodeFPGA",
+                name="fpga_harris_node",
+                remappings=[
+                    ("image", "/camera/image_raw"),
+                    ("camera_info", "/camera/camera_info"),
+                ],
+            ),
         ],
-        parameters=[
-            {
-                "scale_height": 2.0,
-                "scale_width": 2.0,
-            }
-        ],
+        output="screen",
     )
 
     return LaunchDescription([
         # LTTng tracing
         trace,
         # image pipeline
-        # perception_container
-        fpga_graph_node
+        rt_hw_accel_demo_container,
     ])

@@ -51,11 +51,11 @@ def generate_launch_description():
         composable_node_descriptions=[
             ComposableNode(
                 package="rt_hw_accel_demo",
-                plugin="image_proc::HarrisNodeCPU",
+                plugin="rt_hw_accel_demo::HarrisNodeCPU",
                 name="cpu_harris_node",
                 remappings=[
+                    ("image", "/camera/image_raw"),
                     ("camera_info", "/camera/camera_info"),
-                    ("resize", "/resize/resize"),
                 ],
             ),
         ],

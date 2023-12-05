@@ -129,7 +129,6 @@ To enable the workspace:
 sudo su  # use root to facilitate loading acceleration kernels
 source /usr/bin/ros_setup.sh
 COLCON_CURRENT_PREFIX=/home/root/ros_ws/install . /home/root/ros_ws/install/local_setup.sh
-export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/home/root/ros_ws/install/lib/sysroot:/home/root/ros_ws/install/lib/sysroot/aarch64-linux-gnu/
 ```
 
 ### Load acceleration kernel
