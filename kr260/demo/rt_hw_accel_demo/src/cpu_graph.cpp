@@ -14,10 +14,8 @@
 // limitations under the License.
 
 #include <memory>
-#include "image_proc/rectify.hpp"
-#include "image_proc/resize.hpp"
-#include "cpu_harris_node.hpp"
 #include "rclcpp/rclcpp.hpp"
+#include "cpu_harris_node.hpp"
 
 int main(int argc, char * argv[])
 {
@@ -27,7 +25,7 @@ int main(int argc, char * argv[])
 
   rclcpp::NodeOptions options;
   auto harris_node =
-    std::make_shared<image_proc::HarrisNodeCPU>(options);
+    std::make_shared<rt_hw_accel_demo::HarrisNodeCPU>(options);
 
   exec.add_node(harris_node);
 

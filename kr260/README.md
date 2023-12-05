@@ -74,6 +74,9 @@ source /tools/Xilinx/Vitis/2023.1/settings64.sh
 export PATH="/usr/bin":$PATH
 export LD_PRELOAD=/lib/x86_64-linux-gnu/libudev.so.1
 colcon acceleration select kr260
+```
+
+```bash
 colcon build --build-base=build-kr260 --install-base=install-kr260-ubuntu --merge-install --mixin kr260 --packages-select ament_acceleration ament_vitis vitis_common ros2acceleration offloaded_doublevadd_publisher
 ```
 

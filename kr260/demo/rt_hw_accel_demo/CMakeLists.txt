@@ -40,8 +40,8 @@ if (DEFINED ROS_VITIS)
     $ENV{XILINX_HLS}/common/technology/autopilot
     $ENV{XILINX_HLS}/include)
   target_compile_definitions(cpu_harris_node PRIVATE "COMPOSITION_BUILDING_DLL")
-  rclcpp_components_register_nodes(cpu_harris_node "image_proc::HarrisNodeCPU")
-  set(node_plugins "${node_plugins}image_proc::HarrisNodeCPU;$<TARGET_FILE:cpu_harris_node>\n")
+  rclcpp_components_register_nodes(cpu_harris_node "rt_hw_accel_demo::HarrisNodeCPU")
+  set(node_plugins "${node_plugins}rt_hw_accel_demo::HarrisNodeCPU;$<TARGET_FILE:cpu_harris_node>\n")
 
   # fpga_harris_node component (with OpenCL)
   ament_auto_add_library(fpga_harris_node SHARED src/fpga_harris_node.cpp)

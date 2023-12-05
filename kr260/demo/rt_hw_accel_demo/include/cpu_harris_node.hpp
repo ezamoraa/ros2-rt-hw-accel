@@ -32,8 +32,16 @@
 #include <vector>
 #include <thread>
 
-namespace image_proc
+#include "opencv2/imgproc.hpp"
+
+#include "rt_hw_accel_msgs/msg/point.hpp"
+#include "rt_hw_accel_msgs/msg/point_array.hpp"
+
+namespace rt_hw_accel_demo
 {
+  using Corner = rt_hw_accel_msgs::msg::Point;
+  using CornersMessage = rt_hw_accel_msgs::msg::PointArray;
+  using CornersPublisher = rclcpp::Publisher<CornersMessage>;
 
 class HarrisNodeCPU
   : public rclcpp::Node
@@ -42,9 +50,9 @@ public:
   explicit HarrisNodeCPU(const rclcpp::NodeOptions &);
 
 protected:
-  // image_transport::CameraPublisher pub_image_;
   image_transport::Publisher pub_image_;
-  image_transport::CameraSubscriber sub_image_;
+  image_transport::Subscriber sub_image_;
+  CornersPublisher::SharedPtr pub_corners_;
 
   int myHarris_qualityLevel;
   int max_qualityLevel;
@@ -56,19 +64,13 @@ protected:
   size_t get_msg_size(sensor_msgs::msg::Image::ConstSharedPtr image_msg);
   size_t get_msg_size(sensor_msgs::msg::CameraInfo::ConstSharedPtr info_msg);
 
-  void imageCb(
-    sensor_msgs::msg::Image::ConstSharedPtr image_msg,
-    sensor_msgs::msg::CameraInfo::ConstSharedPtr info_msg);
+  void imageCb(sensor_msgs::msg::Image::ConstSharedPtr image_msg);
 
-  void harrisImage(
-    const cv::Mat& in_img,
-    cv::Mat& harris_img) const;
-
-  void harrisImage2(
-    const cv::Mat& in_img,
-    cv::Mat& harris_img) const;
+  void harrisImage(const cv::Mat& in_img,
+                   cv::Mat& harris_img,
+                   CornersMessage& corners_msg) const;
 };
 
-}  // namespace image_proc
+}  // namespace rt_hw_accel_demo
 
 #endif  // IMAGE_PROC__HARRIS_HPP_

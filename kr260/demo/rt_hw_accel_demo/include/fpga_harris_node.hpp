@@ -72,8 +72,9 @@ protected:
 
   void imageCb(sensor_msgs::msg::Image::ConstSharedPtr image_msg);
 
-  void harrisImage_fpga(const cv::Mat& in_img, cv::Mat& harris_img,
-                        CornersMessage& corners_msg) const;
+  void harrisImage(const cv::Mat& in_img,
+                   cv::Mat& harris_img,
+                   CornersMessage& corners_msg) const;
 };
 
 }  // namespace rt_hw_accel_demo

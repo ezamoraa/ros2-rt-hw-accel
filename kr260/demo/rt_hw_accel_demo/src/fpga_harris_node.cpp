@@ -43,6 +43,7 @@
 #define BLOCK_WIDTH 3
 #define NMS_RADIUS 1
 #define MAXCORNERS 1024
+
 // #define WIDTH 1280
 // #define HEIGHT 960
 #define HEIGHT 480  // 480 with default RealSense drivers
@@ -96,6 +97,7 @@ HarrisNodeFPGA::HarrisNodeFPGA(const rclcpp::NodeOptions & options)
   // Create a kernel:
   OCL_CHECK(err, krnl_ = new cl::Kernel(program, "cornerHarris_accel", &err));
 }
+
 size_t HarrisNodeFPGA::get_msg_size(sensor_msgs::msg::Image::ConstSharedPtr image_msg){
   //Serialize the Image and CameraInfo messages
   rclcpp::SerializedMessage serialized_data_img;
@@ -115,8 +117,9 @@ size_t HarrisNodeFPGA::get_msg_size(sensor_msgs::msg::CameraInfo::ConstSharedPtr
   return info_msg_size;
 }
 
-void HarrisNodeFPGA::harrisImage_fpga(const cv::Mat& in_img, cv::Mat& harris_img,
-                                      CornersMessage& corners_msg) const
+void HarrisNodeFPGA::harrisImage(const cv::Mat& in_img,
+                                 cv::Mat& harris_img,
+                                 CornersMessage& corners_msg) const
 {
   cv::Mat img_gray;
   cv::Mat hls_out_img;
@@ -221,7 +224,6 @@ void HarrisNodeFPGA::harrisImage_fpga(const cv::Mat& in_img, cv::Mat& harris_img
 
   // Mark with circles in resulting image
   harris_img = in_img.clone();
-  // harris_img = hls_out_img.clone();
 
   /// Drawing a circle around corners
   for (int j = 1; j < hls_out_img.rows - 1; j++) {
@@ -293,7 +295,7 @@ void HarrisNodeFPGA::imageCb(sensor_msgs::msg::Image::ConstSharedPtr image_msg)
   cv::Mat in_img, ocv_out_img;
   CornersMessage corners_msg;
   cv_ptr->image.copyTo(in_img);
-  harrisImage_fpga(in_img, ocv_out_img, corners_msg);
+  harrisImage(in_img, ocv_out_img, corners_msg);
 
   TRACEPOINT(
     image_proc_harris_fini,
