@@ -16,20 +16,29 @@
 #include <memory>
 #include "rclcpp/rclcpp.hpp"
 #include "cpu_harris_node.hpp"
+#include "cmd_line_sched.hpp"
+#include "sched_utils.hpp"
 
 int main(int argc, char * argv[])
 {
+  // Force flush of the stdout buffer.
+  setvbuf(stdout, NULL, _IONBF, BUFSIZ);
+
+  auto options_reader = SchedOptionsReader();
+  if (!options_reader.read_options(argc, argv)) {
+    options_reader.print_usage();
+    return 0;
+  }
+  auto options = options_reader.get_options();
+
   rclcpp::init(argc, argv);
 
-  rclcpp::executors::SingleThreadedExecutor exec;
+  rclcpp::NodeOptions node_options;
+  auto harris_node = std::make_shared<rt_hw_accel_demo::HarrisNodeCPU>(node_options);
 
-  rclcpp::NodeOptions options;
-  auto harris_node =
-    std::make_shared<rt_hw_accel_demo::HarrisNodeCPU>(options);
+  set_thread_scheduling(pthread_self(), options.policy, options.priority);
 
-  exec.add_node(harris_node);
-
-  exec.spin();
+  rclcpp::spin(harris_node);
   rclcpp::shutdown();
   return 0;
 }

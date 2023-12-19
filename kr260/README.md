@@ -145,7 +145,8 @@ To run FPGA demo nodes:
 ```bash
 ros2 acceleration select rt_hw_accel_demo
 cd /home/root/ros_ws/install/lib/rt_hw_accel_demo/
-ros2 run rt_hw_accel_demo fpga_graph
+# ros2 run rt_hw_accel_demo fpga_graph
+ros2 launch rt_hw_accel_demo trace_fpga_graph.launch.py sched:=SCHED_FIFO priority:=80
 ```
 
 <!-- ```bash

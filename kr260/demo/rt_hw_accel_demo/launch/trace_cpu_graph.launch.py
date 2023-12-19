@@ -14,6 +14,7 @@
 # limitations under the License.
 
 import os
+import sys
 from launch import LaunchDescription
 from launch_ros.actions import Node
 from launch_ros.substitutions import FindPackageShare
@@ -43,28 +44,49 @@ def generate_launch_description():
         # context_names=DEFAULT_CONTEXT,
     )
 
-    rt_hw_accel_demo_container = ComposableNodeContainer(
-        name="rt_hw_accel_demo_container",
-        namespace="",
-        package="rclcpp_components",
-        executable="component_container",
-        composable_node_descriptions=[
-            ComposableNode(
-                package="rt_hw_accel_demo",
-                plugin="rt_hw_accel_demo::HarrisNodeCPU",
-                name="cpu_harris_node",
-                remappings=[
-                    ("image", "/camera/image_raw"),
-                    ("camera_info", "/camera/camera_info"),
-                ],
-            ),
-        ],
-        output="screen",
+    node_args = []
+    for arg in sys.argv:
+        if arg.startswith("sched:="):
+            arg_val = str(arg.split(":=")[1])
+            node_args.extend(['--sched', arg_val])
+        elif arg.startswith("priority:="):
+            arg_val = str(arg.split(":=")[1])
+            node_args.extend(['--priority', arg_val])
+
+    cpu_graph_node = Node(
+       package="rt_hw_accel_demo",
+       executable="cpu_graph",
+       name="cpu_graph",
+       remappings=[
+           ("image", "/camera/image_raw"),
+           ("camera_info", "/camera/camera_info"),
+       ],
+       arguments=node_args,
     )
+
+    # rt_hw_accel_demo_container = ComposableNodeContainer(
+    #     name="rt_hw_accel_demo_container",
+    #     namespace="",
+    #     package="rclcpp_components",
+    #     executable="component_container",
+    #     composable_node_descriptions=[
+    #         ComposableNode(
+    #             package="rt_hw_accel_demo",
+    #             plugin="rt_hw_accel_demo::HarrisNodeCPU",
+    #             name="cpu_harris_node",
+    #             remappings=[
+    #                 ("image", "/camera/image_raw"),
+    #                 ("camera_info", "/camera/camera_info"),
+    #             ],
+    #         ),
+    #     ],
+    #     output="screen",
+    # )
 
     return LaunchDescription([
         # LTTng tracing
         trace,
         # image pipeline
-        rt_hw_accel_demo_container
+        cpu_graph_node,
+        # rt_hw_accel_demo_container
     ])

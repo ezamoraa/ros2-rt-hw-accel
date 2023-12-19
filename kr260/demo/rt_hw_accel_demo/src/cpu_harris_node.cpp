@@ -230,6 +230,7 @@ void HarrisNodeCPU::imageCb(sensor_msgs::msg::Image::ConstSharedPtr image_msg)
     image_msg->header.stamp.sec,
     get_msg_size(harris_msg),
     0);
+
 }
 
 }  // namespace rt_hw_accel_demo
